@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Store | Vue Js</title>
+  </head>
+  <body class="bg-primary2">
+    <!-- navbar -->
+    <header class="z-10 bg-primary1 sticky -top-2 py-5 shadow-md">
+      <nav class="w-9/12 flex flex-row mx-auto">
+        <!-- logo -->
+        <div class="text-lg mx-4">
+          <a href="index.html">
+            <span class="text-primary4 font-bold text-xl md:text-3xl">Andi</span>
+            <span class="text-primary3 font-semibold text-sm md:text-base">suantara</span>
+          </a>
+        </div>
+        <!-- link rel -->
+        <div class="hidden md:block basis-4/5 items-center justify-end">
+          <div class="basis-1/2 flex justify-end space-x-16">
+            <a href="index.html" class="mx-2"><span class="text-white hover:text-primary3 hover:underline">Home</span></a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main id="store">
+      <!-- New Page -->
+      <div class="bg-primary2 pt-20 mb-48">
+        <div class="w-9/12 mx-auto">
+          <!-- title -->
+          <div class="flex flex-col items-center">
+            <span class="text-primary4 text-xl md:text-3xl font-bold">Merchandise</span>
+            <span class="text-primary4 text-sm md:text-base text-center pt-2">kami juga menjual outfit keren dari brand kami <span class="text-primary3 font-semibold">Taraandi</span></span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mt-12 md:mt-20 pt-8">
+            <!-- card product -->
+            <div v-for="product in products" :key="product.id">
+              <div class="bg-primary6 rounded-lg shadow-lg overflow-hidden mb-4 hover:outline hover:outline-offset-0 outline-primary3">
+                <img class="object-cover h-48 md:h-auto w-auto" :src="product.image" alt="hoodie" />
+                <div class="bg-primary6 py-2.5 px-4 flex flex-row justify-between">
+                  <div class="flex flex-col">
+                    <span>{{ product.name }}</span>
+                    <span class="font-bold md:text-xl">Rp{{ product.price }}</span>
+                  </div>
+                  <button @click="addToCart(product)" class="relative py-2 px-6 rounded-md">
+                    <img class="w-7 hover:scale-125 absolute left-2 top-1/2 transform -translate-y-1/2" src="img/Buy.png" alt="Submit" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- chek out -->
+          <div class="flex flex-col md:flex-row mx-auto">
+            <!-- current order -->
+            <div class="w-auto md:w-6/12 p-6 bg-primary6 border border-primary1 rounded-lg shadow mb-4 md:mb-0">
+              <h5 class="mb-2 text-xl font-bold tracking-tight">Current Order</h5>
+              <div class="border-b-2 border-primary6 mb-0"></div>
+              <div v-for="item in cart" :key="item.id" class="w-auto">
+                <div class="mt-8 rounded w-auto outline outline-offset-0 outline-1 flex flex-row">
+                  <img class="w-20 h-20 rounded" :src="item.image" alt="" />
+                  <div class="pl-5 flex flex-col pt-4 pb-4">
+                    <span>{{ item.name }}</span>
+                    <span class="font-semibold">Rp{{ item.price }}</span>
+                  </div>
+                  <button @click="removeFromCart(item)" class="ml-auto mr-4 mt-4 mb-4">
+                    <img class="w-5 h-5 hover:scale-125" src="img/tongsampah.png" alt="buang" />
+                  </button>
+                </div>
+              </div>
+              <div class="pt-16">
+                <div class="flex justify-between mt-32">
+                    <h5 class="mb-2 text-xl font-bold">Total Pembayaran</h5>
+                    <span class="font-bold text-xl mb-5">Rp{{ total }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- footer -->
+    <footer class="bg-primary1 py-5 w-auto flex flex-col justify-center items-center pt-28">
+      <span class="md:text-base text-sm text-primary6 text-center whitespace-nowrap">Deve🤍 by<a class="md:text-base text-sm text-primary3" href="https://instagram.com/taraandi_"> Andisuantara</a></span>
+    </footer>
+  </body>
+  <script>
+
+    new Vue({
+      el: "#store",
+      data: {
+        products: [
+          { id: 1, image: "img/pkt3.jpg", name: "Jam Tangan", price: 150000 },
+          { id: 2, image: "img/pkt.jpg", name: "Baju", price: 100000 },
+          { id: 3, image: "img/pkt2.jpg", name: "Topi", price: 80000 },
+        ],
+        cart: [],
+        total: 0,
+      },
+      methods: {
+        addToCart(product) {
+          this.cart.push({ id: product.id, image: product.image, name: product.name, price: product.price });
+          this.total += product.price;
+        },
+
+        removeFromCart(item) {
+          const index = this.cart.indexOf(item);
+          if (index > -1) {
+            this.total -= this.cart[index].price;
+            this.cart.splice(index, 1);
+          }
+        },
+      },
+    });
+
+  </script>
+</html>
